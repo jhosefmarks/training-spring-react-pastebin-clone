@@ -1,12 +1,16 @@
 package com.jhosefmarks.pastebin_api.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity(name  = "users")
@@ -34,6 +38,9 @@ public class UserEntity implements Serializable {
 
   @Column(nullable = false)
   private String encryptedPassword;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+  private List<PostEntity> posts = new ArrayList<>();
 
   public long getId() {
     return id;
@@ -82,4 +89,13 @@ public class UserEntity implements Serializable {
   public void setEncryptedPassword(String encryptedPassword) {
     this.encryptedPassword = encryptedPassword;
   }
+
+  public List<PostEntity> getPosts() {
+    return posts;
+  }
+
+  public void setPosts(List<PostEntity> posts) {
+    this.posts = posts;
+  }
+
 }

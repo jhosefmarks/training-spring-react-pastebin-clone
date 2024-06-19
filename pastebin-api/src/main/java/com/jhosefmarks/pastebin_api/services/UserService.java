@@ -1,8 +1,10 @@
 package com.jhosefmarks.pastebin_api.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -11,9 +13,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.jhosefmarks.pastebin_api.entities.PostEntity;
 import com.jhosefmarks.pastebin_api.entities.UserEntity;
 import com.jhosefmarks.pastebin_api.exceptions.EmailExistsException;
+import com.jhosefmarks.pastebin_api.repositories.PostRepository;
 import com.jhosefmarks.pastebin_api.repositories.UserRepository;
+import com.jhosefmarks.pastebin_api.shared.dto.PostDto;
 import com.jhosefmarks.pastebin_api.shared.dto.UserDto;
 
 @Service
@@ -23,7 +28,13 @@ public class UserService implements UserServiceInterface {
   UserRepository userRepository;
 
   @Autowired
+  PostRepository postRepository;
+
+  @Autowired
   BCryptPasswordEncoder bCryptPasswordEncoder;
+
+  @Autowired
+  ModelMapper mapper;
 
   @Override
   public UserDto createUser(UserDto user) {
@@ -72,6 +83,22 @@ public class UserService implements UserServiceInterface {
     BeanUtils.copyProperties(userEntity, userToReturn);
 
     return userToReturn;
+  }
+
+  @Override
+  public List<PostDto> getUserPosts(String email) {
+    UserEntity userEntity = userRepository.findByEmail(email);
+
+    List<PostEntity> posts = postRepository.getByUserIdOrderByCreatedAtDesc(userEntity.getId());
+
+    List<PostDto> postDtos = new ArrayList<>();
+
+    for (PostEntity post : posts) {
+      PostDto postDto = mapper.map(post, PostDto.class);
+      postDtos.add(postDto);
+    }
+
+    return postDtos;
   }
 
 }

@@ -50,6 +50,8 @@ public class WebSecurity {
       .csrf((csrf) -> csrf.disable())
       .authorizeHttpRequests((authz) -> authz
         .requestMatchers(HttpMethod.POST, "/users").permitAll()
+        .requestMatchers(HttpMethod.GET, "/posts/last").permitAll()
+        .requestMatchers(HttpMethod.GET, "/posts/{id}").permitAll()
         .requestMatchers("/error").permitAll()
         .anyRequest().authenticated())
       .addFilter(getAuthenticationFilter(authenticationManager))
