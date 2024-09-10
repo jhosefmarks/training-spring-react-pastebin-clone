@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode'
 
 import { logoutUser } from '../actions/authActions'
 import { setCurrentUser } from '../reducers/authReducer'
-import store from '../store';
+import store from '../store'
 import setAuthToken from './setAuthToken'
 
 const checkForToken = () => {

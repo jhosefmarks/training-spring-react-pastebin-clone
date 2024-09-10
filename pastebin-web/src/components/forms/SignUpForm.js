@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 
 export default function SignUpForm({ errors, onSubmitCallback }) {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [password, setPassword] = useState('')
 
   const submitForm = (e) => {
-    e.preventDefault();
-    onSubmitCallback({ email, password, firstName, lastName });
+    e.preventDefault()
+    onSubmitCallback({ email, password, firstName, lastName })
   }
 
   return (
