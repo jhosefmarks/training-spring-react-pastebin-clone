@@ -1,0 +1,35 @@
+image: node:latest
+
+variables:
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+  - pastebin-web/node_modules/
+
+build:
+  stage: build
+  only:
+    - main
+  script:
+    - cd pastebin-web
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - pastebin-web/build/
+
+deploy:
+  stage: deploy
+  only:
+    - main
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  dependencies:
+    - build
+  script:
+    - aws s3 cp --recursive ./pastebin-web/build s3://pastebinclone
