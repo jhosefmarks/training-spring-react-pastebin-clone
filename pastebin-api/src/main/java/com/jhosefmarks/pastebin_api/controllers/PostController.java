@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 import com.jhosefmarks.pastebin_api.models.requests.PostCreateRequestModel;
 import com.jhosefmarks.pastebin_api.models.responses.OperationStatusModel;
@@ -40,7 +41,7 @@ public class PostController {
   ModelMapper mapper;
 
   @PostMapping
-  public PostRest createPost(@RequestBody PostCreateRequestModel createRequestModel) {
+  public PostRest createPost(@RequestBody @Valid PostCreateRequestModel createRequestModel) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     String email = authentication.getPrincipal().toString();
@@ -105,7 +106,7 @@ public class PostController {
   }
 
   @PutMapping(path = "/{id}")
-  public PostRest updatePost(@RequestBody PostCreateRequestModel postCreateRequestModel, @PathVariable String id) {
+  public PostRest updatePost(@RequestBody @Valid PostCreateRequestModel postCreateRequestModel, @PathVariable String id) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     UserDto user = userService.getUser(authentication.getPrincipal().toString());

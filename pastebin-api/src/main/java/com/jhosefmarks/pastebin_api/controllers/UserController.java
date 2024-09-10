@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.validation.Valid;
 
 import com.jhosefmarks.pastebin_api.models.requests.UserDetailRequestModel;
 import com.jhosefmarks.pastebin_api.models.responses.PostRest;
@@ -49,7 +50,7 @@ public class UserController {
   }
 
   @PostMapping
-  public UserRest createUser(@RequestBody UserDetailRequestModel userDetails) {
+  public UserRest createUser(@RequestBody @Valid UserDetailRequestModel userDetails) {
     UserRest userToReturn = new UserRest();
     UserDto userDto = new UserDto();
 
